@@ -4,7 +4,7 @@ const Featured = () => {
     return (
         <div className="container mx-auto my-12">
             <div className="hero" style={{ backgroundImage: `url(${featured})`, backgroundAttachment: 'fixed' }}>
-                <div className="hero-overlay bg-opacity-60"></div>
+                <div className="hero-overlay bg-opacity-70"></div>
                 <div>
                     <SectionTitle heading={"Featured Item"} subHeading={"Check it out"} isWhite={true}></SectionTitle>
                     <div className='flex gap-4 items-center justify-center my-16 mx-24'>
@@ -15,7 +15,7 @@ const Featured = () => {
                             <p>March 20, 2023</p>
                             <h1 className='uppercase'>Where can I get some?</h1>
                             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum iusto soluta eveniet, sapiente odit dolorum quo aperiam quidem natus vitae?</p>
-                            <button className='btn btn-outline border-0 border-b-2'>Read More</button>
+                            <button className='btn btn-outline text-white border-0 border-b-2 border-b-white'>Read More</button>
                         </div>
                     </div>
                 </div>
