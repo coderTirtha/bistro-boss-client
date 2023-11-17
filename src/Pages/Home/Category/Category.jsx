@@ -11,17 +11,16 @@ import slide2 from '../../../assets/home/slide2.jpg';
 import slide3 from '../../../assets/home/slide3.jpg';
 import slide4 from '../../../assets/home/slide4.jpg';
 import slide5 from '../../../assets/home/slide5.jpg';
+import SectionTitle from '../../../components/SectionTitle/SectionTitle';
 
 const Category = () => {
     return (
         <div className='my-12 container mx-auto'>
-            <div className='max-w-md mx-auto my-8'>
-                <h3 className='text-[#D99904] text-center text-xl italic border-b-2 border-b-gray-200 py-4'>---From 11:00am to 10:00pm---</h3>
-                <h1 className='text-center text-4xl font-bold border-b-2 border-b-gray-200 py-4'>Order Online</h1>
-            </div>
+            <SectionTitle heading={"Order Online"} subHeading={"From 11.00am to 10.00pm"}></SectionTitle>
             <Swiper
                 slidesPerView={4}
                 spaceBetween={30}
+                autoplay={true}
                 centeredSlides={true}
                 pagination={
                     {
