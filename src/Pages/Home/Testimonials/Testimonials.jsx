@@ -14,7 +14,7 @@ const Testimonials = () => {
         fetch('reviews.json')
             .then(res => res.json())
             .then(data => setReviews(data));
-    }, [])
+    }, []);
     return (
         <div>
             <SectionTitle heading={"Testimonials"} subHeading={"What Our Client Say"}></SectionTitle>

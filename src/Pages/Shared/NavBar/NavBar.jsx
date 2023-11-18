@@ -1,9 +1,10 @@
+import { NavLink } from 'react-router-dom';
 import logo from '../../../assets/logo.png';
 
 const NavBar = () => {
     const links = <>
-        <li><a>Home</a></li>
-        <li><a>Menu</a></li>
+        <li><NavLink to="/">Home</NavLink></li>
+        <li><NavLink to='/menu'>Menu</NavLink></li>
         <li><a>Shop</a></li>
         <li><a>Contact</a></li>
         <li><a>Dashboard</a></li>
