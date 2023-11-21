@@ -5,7 +5,7 @@ import Footer from '../Pages/Shared/Footer/Footer';
 
 const Main = () => {
     const location = useLocation();
-    const navFooterTrue = location.pathname.includes('login');
+    const navFooterTrue = location.pathname.includes('login') || location.pathname.includes('signup');
     return (
         <div>
             {navFooterTrue || <NavBar></NavBar>}

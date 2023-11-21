@@ -1,10 +1,13 @@
-import { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import loginImg from '../../assets/others/authentication1.png';
 import { loadCaptchaEnginge, LoadCanvasTemplate, LoadCanvasTemplateNoReload, validateCaptcha } from 'react-simple-captcha';
+import { AuthContext } from '../../Providers/AuthProvider/AuthProvider';
+import { Link } from 'react-router-dom';
 
 const Login = () => {
     const captchaRef = useRef(null);
     const [disabled, setDisabled] = useState(true);
+    const {user, signInUser} = useContext(AuthContext);
     useEffect(() => {
         loadCaptchaEnginge(6);
     }, []);
@@ -13,7 +16,14 @@ const Login = () => {
         const form = new FormData(event.currentTarget);
         const email = form.get('email');
         const password = form.get('password');
-        console.log(email, password);
+        signInUser(email, password)
+        .then(res => {
+            const user = res.user;
+            console.log(user);
+        })
+        .catch(err => {
+            console.error(err);
+        })
 
     }
     const handleCaptchaValidation = event => {
@@ -56,6 +66,7 @@ const Login = () => {
                     </div>
                     <input disabled={disabled} type="submit" value="Login" className='btn btn-block bg-[#D1A054B2] text-white mt-6 hover:text-[#D1A054B2]' />
                 </form>
+                <p className='text-[#D1A054] text-center'>Don't have an account? <Link to={'/signup'} className='font-bold'>Sign Up</Link></p>
             </div>
         </div>
     );
