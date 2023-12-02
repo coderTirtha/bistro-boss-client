@@ -48,10 +48,12 @@ const NavBar = () => {
                 </ul>
             </div>
             <div className="navbar-end gap-4">
-                <div className='relative'>
-                    <FaShoppingCart className='text-xl' />
-                    <div className='badge badge-error absolute -right-4 -top-4'>{cart.length}</div>
-                </div>
+                <Link to={'/dashboard/cart'}>
+                    <div className='relative'>
+                        <FaShoppingCart className='text-xl' />
+                        <div className='badge badge-error absolute -right-4 -top-4'>{cart.length}</div>
+                    </div>
+                </Link>
                 {
                     user ?
                         <div className="dropdown dropdown-end">

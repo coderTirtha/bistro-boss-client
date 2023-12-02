@@ -1,18 +1,21 @@
 import { useContext, useEffect, useRef, useState } from 'react';
 import loginImg from '../../assets/others/authentication1.png';
+import { FcGoogle } from "react-icons/fc";
 import { loadCaptchaEnginge, LoadCanvasTemplate, LoadCanvasTemplateNoReload, validateCaptcha } from 'react-simple-captcha';
 import { AuthContext } from '../../Providers/AuthProvider/AuthProvider';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
+import useAxiosPublic from '../../hooks/useAxiosPublic';
 
 const Login = () => {
     const captchaRef = useRef(null);
     const [disabled, setDisabled] = useState(true);
-    const { signInUser } = useContext(AuthContext);
+    const { signInUser, googleSignIn } = useContext(AuthContext);
     const location = useLocation();
     const navigate = useNavigate();
+    const axiosPublic = useAxiosPublic();
     useEffect(() => {
         loadCaptchaEnginge(6);
     }, []);
@@ -43,16 +46,36 @@ const Login = () => {
             setDisabled(true);
         }
     }
+    const handleGoogleSignIn = () => {
+        googleSignIn()
+        .then(res => {
+            toast.success("User logged in successfully!");
+            const userInfo = {
+                name: res.user?.displayName,
+                email: res.user?.email
+            }
+            axiosPublic.post('/users', userInfo)
+            .then(res => {
+                if(res.data.insertedId) {
+                    toast.success("User info saved!");
+                }
+            });
+            navigate(`${location?.state?.from?.pathname ? location.state.from.pathname : '/'}`, { replace: true });
+        })
+        .catch(error => {
+            toast.error(error.message);
+        })
+    }
     return (
         <>
             <Helmet>
                 <title>Login | Bistro Boss</title>
             </Helmet>
-            <div className={`flex items-center gap-4 container mx-auto h-screen`}>
+            <div className={`flex items-center gap-4 container mx-auto min-h-screen`}>
                 <div className='flex-1'>
                     <img src={loginImg} alt="" className='' />
                 </div>
-                <div className='flex-1'>
+                <div className='flex-1 py-8'>
                     <h1 className='text-4xl text-center font-bold'>Login Now!</h1>
                     <form className='my-6' onSubmit={handleLogin}>
                         <div className="form-control">
@@ -79,6 +102,11 @@ const Login = () => {
                         <input disabled={disabled} type="submit" value="Login" className='btn btn-block bg-[#D1A054B2] text-white mt-6 hover:text-[#D1A054B2]' />
                     </form>
                     <p className='text-[#D1A054] text-center'>Don't have an account? <Link to={'/signup'} className='font-bold'>Sign Up</Link></p>
+                    <div className='divider'></div>
+                    <div className='text-center'>
+                        <p>Sign in With</p>
+                        <button onClick={handleGoogleSignIn} className='btn btn-outline btn-circle'><FcGoogle className='text-xl' /></button>
+                    </div>
                 </div>
             </div>
             <ToastContainer />

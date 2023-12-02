@@ -6,8 +6,12 @@ import { useForm } from 'react-hook-form';
 import { Helmet } from 'react-helmet-async';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import useAxiosPublic from '../../hooks/useAxiosPublic';
+import { FcGoogle } from 'react-icons/fc';
+import useAuth from '../../hooks/useAuth';
 
 const SignUp = () => {
+    const { googleSignIn } = useAuth();
     const {
         register,
         handleSubmit,
@@ -15,35 +19,70 @@ const SignUp = () => {
     } = useForm();
     const { createUser, updateUser } = useContext(AuthContext);
     const navigate = useNavigate();
+    const axiosPublic = useAxiosPublic();
     const handleSignUp = data => {
-        console.log(data);
         createUser(data.email, data.password)
-        .then(res => {
-            updateUser(res.user, data.name, data.photo)
             .then(res => {
-                toast.success("User Profile created successfully!");
-                setTimeout(() => {
-                    navigate('/');
-                }, 3000);
+                updateUser(res.user, data.name, data.photo)
+                    .then(res => {
+                        const userInfo = {
+                            name: data.name,
+                            email: data.email
+                        }
+                        axiosPublic.post('/users', userInfo)
+                            .then(res => {
+                                if (res.data.insertedId) {
+                                    toast.success("User Profile created successfully!");
+                                    setTimeout(() => {
+                                        navigate('/');
+                                    }, 3000);
+                                }
+                            })
+                    })
+                    .catch(error => {
+                        toast.error(error.message);
+                    })
             })
             .catch(error => {
                 toast.error(error.message);
             })
-        })
-        .catch(error => {
-            toast.error(error.message);
-        })
+    }
+    const handleGoogleSignIn = () => {
+        googleSignIn()
+            .then(res => {
+                const userInfo = {
+                    name: res.user?.displayName,
+                    email: res.user?.email
+                }
+                axiosPublic.post('/users', userInfo)
+                    .then(res => {
+                        if (res.data.insertedId) {
+                            toast.success("User Profile created successfully!");
+                            navigate('/');
+                        } else {
+                            toast.error("User already exists!");
+                            setTimeout(() => {
+                                navigate('/login');
+                            }, 3000);
+                        }
+
+                    })
+
+            })
+            .catch(error => {
+                toast.error(error.message);
+            })
     }
     return (
         <>
             <Helmet>
                 <title>Sign Up | Bistro Boss</title>
             </Helmet>
-            <div className={`flex flex-row-reverse items-center gap-4 container mx-auto h-screen`}>
+            <div className={`flex flex-row-reverse items-center gap-4 container mx-auto min-h-screen`}>
                 <div className='flex-1'>
                     <img src={loginImg} alt="" className='' />
                 </div>
-                <div className='flex-1'>
+                <div className='flex-1 py-8'>
                     <h1 className='text-4xl text-center font-bold'>Sign Up Now!</h1>
                     <form className='my-6' onSubmit={handleSubmit(handleSignUp)}>
                         <div className="form-control">
@@ -80,6 +119,11 @@ const SignUp = () => {
                         <input type="submit" value="Sign Up" className='btn btn-block bg-[#D1A054B2] text-white mt-6 hover:text-[#D1A054B2]' />
                     </form>
                     <p className='text-[#D1A054] text-center'>Already have an account? <Link className='font-bold' to={'/login'}>Log in</Link></p>
+                    <div className='divider'></div>
+                    <div className='text-center'>
+                        <p>Sign up With</p>
+                        <button onClick={handleGoogleSignIn} className='btn btn-outline btn-circle'><FcGoogle className='text-xl' /></button>
+                    </div>
                 </div>
             </div>
             <ToastContainer />
