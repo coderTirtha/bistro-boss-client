@@ -59,7 +59,7 @@ const NavBar = () => {
                         <div className="dropdown dropdown-end">
                             <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
                                 <div className="w-10 rounded-full">
-                                    <img alt="User" src={user?.photoURL ? user.photoURL : userImg} />
+                                    <img alt="User" src={user?.photoURL ? user?.photoURL : userImg} />
                                 </div>
                             </label>
                             <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 text-black rounded-box w-52">

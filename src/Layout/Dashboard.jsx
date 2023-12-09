@@ -19,7 +19,7 @@ const Dashboard = () => {
                         {
                             isAdmin ? <>
                                 <li>
-                                    <NavLink to={'adminHome'}>
+                                    <NavLink to={'admin/home'}>
                                         <FaHome />
                                         Admin Home
                                     </NavLink>
@@ -63,7 +63,7 @@ const Dashboard = () => {
                                         </NavLink>
                                     </li>
                                     <li>
-                                        <NavLink to={'payment'}>
+                                        <NavLink to={'paymentHistory'}>
                                             <BsFillCreditCard2FrontFill />
                                             Payment History
                                         </NavLink>

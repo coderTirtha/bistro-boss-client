@@ -3,6 +3,7 @@ import SectionTitle from "../../../components/SectionTitle/SectionTitle";
 import useCart from "../../../hooks/useCart";
 import { RiDeleteBinLine } from "react-icons/ri";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import { Link } from "react-router-dom";
 
 const Cart = () => {
     const [cart, refetch] = useCart();
@@ -42,7 +43,13 @@ const Cart = () => {
                 <div className="flex justify-between">
                     <h2 className="text-3xl font-semibold">Total items : {cart.length}</h2>
                     <h2 className="text-3xl font-semibold">Total price : ${totalPrice}</h2>
-                    <button className="btn bg-[#D1A054] text-white border-0 hover:text-[#D1A054]">Proceed to Checkout</button>
+                    {
+                        cart.length ?
+                        <Link to={'/dashboard/payment'}>
+                            <button className="btn bg-[#D1A054] text-white border-0 hover:text-[#D1A054]">Proceed to Checkout</button>
+                        </Link> :
+                        <button className="btn bg-[#D1A054] text-white border-0 hover:text-[#D1A054]" disabled>Proceed to Checkout</button>
+                    }
                 </div>
                 {/* Cart Table */}
                 <div className="overflow-x-auto my-8">
